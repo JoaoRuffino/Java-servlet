@@ -23,7 +23,7 @@
 <body>
 	<div class="container mt-3" id="frmLogin">
 		<h2>Autenticação</h2>
-		<form action="/action_page.php" class="p-5">
+		<form action="users" class="p-5">
 			<div class="mb-3 mt-3">
 				<label for="email" class="form-label">Email:</label> <input
 					type="email" class="form-control" id="email"
@@ -40,7 +40,21 @@
 				Senha</a> <a id="linkCadUser" class="btn btn-primary" href="#">Cadastrar
 				Usuário</a>
 		</form>
+
+
+		
 	</div>
+	
+	<div class="container mt-3" id="loggedIn">
+		<h2>Fazer Requisição GET com AJAX</h2>
+		<button class="btn btn-primary mb-5" onclick="fetchUser()">Buscar Usuários</button>
+
+		<h3>Resultado:</h3>
+		<div id="result">
+		</div>
+	</div>
+	
+	
 	<div class="container mt-3" id="frmLembrarSenhaArea">
 		<h2>Lembrar Senha</h2>
 		<form action="/action_page.php" class="p-5">
@@ -74,7 +88,38 @@
 	</div>
 </body>
 <script>
+
+function fetchUser() {
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "users", true); 
+    
+    
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            var response = JSON.parse(xhr.responseText);  
+            
+            var resultDiv = document.getElementById("result");
+            resultDiv.innerHTML = "";  
+
+            response.forEach(function(user) {
+                resultDiv.innerHTML += 
+                    "User ID: " + user.user_id + "<br>" +
+                    "Username: " + user.username + "<br>" +
+                    "Lastname: " + user.lastname + "<br><br>";
+            });
+        }
+    };
+    xhr.send();
+}
+
+function validateUser(){
+	
+}
+
 $(document).ready(function() {
+	
+	
+	
 
     function limpa_formulário_cep() {
         // Limpa valores do formulário de cep.
@@ -89,17 +134,28 @@ $(document).ready(function() {
     //$("#frmLogin").hide();
     $("#frmLembrarSenhaArea").hide();
     $("#frmCadUser").hide();
+    $("#loggedIn").hide();
+
 
     $("#linkLembrarSenha").click(() => {
     	$("#frmLogin").hide();
         $("#frmLembrarSenhaArea").show();
         $("#frmCadUser").hide();
+        $("#loggedIn").hide();
+
     });
+    
+    
     $("#linkCadUser").click(() => {
     	$("#frmLogin").hide();
         $("#frmLembrarSenhaArea").hide();
         $("#frmCadUser").show();
+        $("#loggedIn").hide();
+
     });
+    
+    
+    
     //Quando o campo cep perde o foco.
     $("#cep").blur(function() {
 

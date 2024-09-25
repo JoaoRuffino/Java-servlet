@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.util.List;
 import com.google.gson.Gson;
 
-@WebServlet("/Servlet01")
+@WebServlet("/users")
 public class Servlet01 extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
@@ -31,9 +31,7 @@ public class Servlet01 extends HttpServlet {
             
             out.print(jsonResponse);
             
-            //for(User user: users) {
-           // 	out.println("Name: " + user.getUsername() + " "  + user.getLastname());
-            //}
+           
             
             
         } catch (SQLException e) {
@@ -49,7 +47,40 @@ public class Servlet01 extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
-        out.println("POST request received");
+        //out.println("POST request received");
+        Consume consume = new Consume();
+
+        User user = new User();
+        
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+        
+        user.setEmail(email);
+        user.setPassword(password);
+        Gson gson = new Gson();
+        
+        try {
+			boolean verify = consume.userLoginDB(user);
+			if (verify) {
+		        response.setStatus(HttpServletResponse.SC_OK);
+		        //String jsonResponse = gson.toJson("Login successful");
+	            
+	            out.print("Login successful");		    
+	       } 
+			else {
+		        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+		        out.println("Invalid credentials");
+		    }
+	
+			
+		} catch (SQLException e) {
+            e.printStackTrace();
+            out.println("Database error: " + e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            out.println("Error: " + e.getMessage());
+        }
+        
         
     }
 
