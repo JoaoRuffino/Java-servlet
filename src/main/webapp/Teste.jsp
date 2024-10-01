@@ -92,35 +92,6 @@
 </body>
 <script>
 
-function fetchUser() {
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", "users", true); 
-    
-    
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            var response = JSON.parse(xhr.responseText);  
-            
-            var resultDiv = document.getElementById("result");
-            resultDiv.innerHTML = "";  
-
-            response.forEach(function(user) {
-                resultDiv.innerHTML += 
-                    "User ID: " + user.user_id + "<br>" +
-                    "Username: " + user.username + "<br>" +
-                    "Lastname: " + user.lastname + "<br><br>";
-            });
-        }
-    };
-    xhr.send();
-}
-
-
-
-
-
-
-
 $(document).ready(function() {
 	
 
