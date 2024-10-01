@@ -23,7 +23,7 @@
 <body>
 	<div class="container mt-3" id="frmLogin">
 		<h2>Autenticação</h2>
-		<form action="users" class="p-5">
+		<form class="p-5">
 			<div class="mb-3 mt-3">
 				<label for="email" class="form-label">Email:</label> <input
 					type="email" class="form-control" id="email"
@@ -42,8 +42,11 @@
 		</form>
 
 
-		
+		<div id="resultado"></div>
 	</div>
+	
+	
+	
 	
 	<div class="container mt-3" id="loggedIn">
 		<h2>Fazer Requisição GET com AJAX</h2>
@@ -65,7 +68,7 @@
 			</div>
 
 
-			<button type="button" id="btn-login" class="btn btn-primary">Submit</button>
+			<button type="button" id="btn-remember" class="btn btn-primary">Submit</button>
 		</form>
 	</div>
 
@@ -83,7 +86,7 @@
 			<label>IBGE:</label> <input class="form-control" name="ibge"
 				type="text" id="ibge" size="8" /> <br />
 
-			<button type="button" id="btn-login" class="btn btn-primary">Submit</button>
+			<button type="button" id="btn-cadastro" class="btn btn-primary">Submit</button>
 		</form>
 	</div>
 </body>
@@ -112,17 +115,35 @@ function fetchUser() {
     xhr.send();
 }
 
-function validateUser(){
-	
-}
+
+
+
+
+
 
 $(document).ready(function() {
 	
-	
-	
 
+
+	$("#btn-login").click(function() {
+        var myemail = $("#email").val();
+        var pswd = $("#pwd").val(); 
+
+        $.post("users", { email: myemail, password: pswd })
+            .done(function(data, status, xhr) {
+                if (xhr.status === 200) {
+                    window.location.href = "Admin.jsp"; 
+                    $("#pwd").val() = "";
+                    $("#email").val() = "";
+                }
+            })
+            .fail(function(xhr, status, error) {
+                $("#resultado").text("Falha na autenticação: " + xhr.status + " " + error);
+            });
+    });
+	
+	
     function limpa_formulário_cep() {
-        // Limpa valores do formulário de cep.
         $("#rua").val("");
         $("#bairro").val("");
         $("#cidade").val("");

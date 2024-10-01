@@ -1,3 +1,6 @@
+package controller;
+import model.User;
+import db.DBConnection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;

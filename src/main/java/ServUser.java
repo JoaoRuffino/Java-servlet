@@ -8,23 +8,24 @@ import javax.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 import java.util.List;
 import com.google.gson.Gson;
-
+import model.User;
+import controller.ControllerUser;
 @WebServlet("/users")
-public class Servlet01 extends HttpServlet {
+
+
+public class ServUser extends HttpServlet {
     private static final long serialVersionUID = 1L;
-
-
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         
+        ControllerUser controll = new ControllerUser();
         
-        Consume consume = new Consume();
         try {
         	//out.println("GET request received");
-            List<User> users = consume.consumeUsers();
+            List<User> users = controll.consumeUsers();
             
             Gson gson = new Gson();
             String jsonResponse = gson.toJson(users);
@@ -48,7 +49,7 @@ public class Servlet01 extends HttpServlet {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         //out.println("POST request received");
-        Consume consume = new Consume();
+        ControllerUser controll = new ControllerUser();
 
         User user = new User();
         
@@ -60,7 +61,7 @@ public class Servlet01 extends HttpServlet {
         Gson gson = new Gson();
         
         try {
-			boolean verify = consume.userLoginDB(user);
+			boolean verify = controll.userLoginDB(user);
 			if (verify) {
 		        response.setStatus(HttpServletResponse.SC_OK);
 		        //String jsonResponse = gson.toJson("Login successful");
