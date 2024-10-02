@@ -21,7 +21,6 @@ public class Consume {
 			User user = new User();
 			user.setUser_id(rs.getInt("user_id"));
 			user.setUsername(rs.getString("username"));
-			user.setLastname(rs.getString("lastname"));
 			user.setEmail(rs.getString("email"));
 			users.add(user);
 		}
@@ -47,7 +46,6 @@ public class Consume {
 		if(rs.next()) {
 			if(rs.getString("email") != null) {
 				if(rs.getString("password").equals(user.getPassword())) {
-					user.setLastname(rs.getString("lastname"));
 					user.setUsername(rs.getString("username"));
 					return true;
 				}

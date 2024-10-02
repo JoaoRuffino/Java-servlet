@@ -2,11 +2,19 @@ package model;
 
 public class User {
 	private String username;
-	private String lastname;
 	private Integer user_id;
 	private String password;
 	private String email;
+	private String cep;
 	
+	public String getCep() {
+		return cep;
+	}
+
+	public void setCep(String cep) {
+		this.cep = cep;
+	}
+
 	public User(){
 	}
 	
@@ -34,12 +42,7 @@ public class User {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	public String getLastname() {
-		return lastname;
-	}
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
-	}
+	
 	public Integer getUser_id() {
 		return user_id;
 	}

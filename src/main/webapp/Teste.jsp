@@ -44,20 +44,20 @@
 
 		<div id="resultado"></div>
 	</div>
-	
-	
-	
-	
+
+
+
+
 	<div class="container mt-3" id="loggedIn">
 		<h2>Fazer Requisição GET com AJAX</h2>
-		<button class="btn btn-primary mb-5" onclick="fetchUser()">Buscar Usuários</button>
+		<button class="btn btn-primary mb-5" onclick="fetchUser()">Buscar
+			Usuários</button>
 
 		<h3>Resultado:</h3>
-		<div id="result">
-		</div>
+		<div id="result"></div>
 	</div>
-	
-	
+
+
 	<div class="container mt-3" id="frmLembrarSenhaArea">
 		<h2>Lembrar Senha</h2>
 		<form action="/action_page.php" class="p-5">
@@ -74,10 +74,19 @@
 
 	<div class="container mt-3" id="frmCadUser">
 		<h2>Cadastro do Usuário</h2>
-		<form action="/action_page.php" class="p-5">
-			<label>Cep:</label> <input class="form-control" name="cep"
-				type="text" id="cep" value="" size="10" maxlength="9" /> <br /> <label>Rua:
-			</label> <input class="form-control" name="rua" ype="text" id="rua" size="60" /><br />
+		<form class="p-5">
+			<label>Nome: </label> <input class="form-control" name="username"
+				type="text" id="name" value="" /> <br /> 
+				<label>Email: </label> 
+				<input
+				class="form-control" name="email" type="text" id="email" value="" />
+			<br /> <label>Senha: </label> 
+			<input class="form-control"
+				name="email" type="password" id="pswd" value="" /> <br /> 
+				<label>Cep:</label>
+			<input class="form-control" name="cep" type="text" id="cep" value=""
+				size="10" maxlength="9" /> <br /> <label>Rua: </label> <input
+				class="form-control" name="rua" ype="text" id="rua" size="60" /><br />
 			<label>Bairro:</label> <input class="form-control" name="bairro"
 				type="text" id="bairro" size="40" /> <br /> <label>Cidade:
 			</label><input class="form-control" name="cidade" type="text" id="cidade"

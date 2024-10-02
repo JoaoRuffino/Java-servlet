@@ -21,7 +21,6 @@ public class ControllerUser {
 			User user = new User();
 			user.setUser_id(rs.getInt("user_id"));
 			user.setUsername(rs.getString("username"));
-			user.setLastname(rs.getString("lastname"));
 			user.setEmail(rs.getString("email"));
 			users.add(user);
 		}
@@ -47,7 +46,6 @@ public class ControllerUser {
 		if(rs.next()) {
 			if(rs.getString("email") != null) {
 				if(rs.getString("password").equals(user.getPassword())) {
-					user.setLastname(rs.getString("lastname"));
 					user.setUsername(rs.getString("username"));
 					return true;
 				}
@@ -58,5 +56,22 @@ public class ControllerUser {
 		if (rs != null) rs.close();
         if (statement != null) statement.close();
         return false;
+	}
+	
+	public boolean userRegister(User user) throws SQLException, Exception{
+		DBConnection conn = new DBConnection();
+		String query = "insert into users values (username=?, password=?, email=?, cep=?)";
+		PreparedStatement statement = conn.getConnection().prepareStatement(query);
+		statement.setString(1, user.getUsername());
+		statement.setString(2, user.getPassword());
+		statement.setString(3, user.getEmail());
+		statement.setString(4, user.getCep());
+		ResultSet rs = statement.executeQuery();
+		if(rs.next()) {
+			if (rs != null) rs.close();
+	        if (statement != null) statement.close();
+			return true;
+		}
+		return false;
 	}
 }
