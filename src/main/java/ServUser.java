@@ -57,11 +57,10 @@ public class ServUser extends HttpServlet {
         
         user.setEmail(email);
         user.setPassword(password);
-        Gson gson = new Gson();
         
         try {
-			boolean verify = controll.userLoginDB(user);
-			if (verify) {
+			
+			if (controll.userLoginDB(user)) {
 		        response.setStatus(HttpServletResponse.SC_OK);
 		        //String jsonResponse = gson.toJson("Login successful");
 	            
@@ -88,7 +87,29 @@ public class ServUser extends HttpServlet {
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
-        out.println("DELETE request received");
+        User user = new User();
+        ControllerUser controll = new ControllerUser();
+        
+        String user_id = request.getParameter("user_id");
+        user.setUser_id(Integer.parseInt(user_id));
+        try {
+        	if(controll.userDelete(user)) {
+		        response.setStatus(HttpServletResponse.SC_OK);
+		        out.print("User successfully deleted");
+        	}else {
+		        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+		        out.print("Fail delete user");
+
+        	}
+        }catch (SQLException e) {
+            e.printStackTrace();
+            out.println("Database error: " + e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            out.println("Error: " + e.getMessage());
+        }
+        
+        
     }
 
     @Override

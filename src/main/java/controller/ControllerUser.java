@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.mindrot.jbcrypt.BCrypt;
 public class ControllerUser {
 
 	
@@ -45,8 +47,11 @@ public class ControllerUser {
 		
 		if(rs.next()) {
 			if(rs.getString("email") != null) {
-				if(rs.getString("password").equals(user.getPassword())) {
+				
+				if(BCrypt.checkpw(user.getPassword(), rs.getString("password"))) {
 					user.setUsername(rs.getString("username"));
+					user.setUser_id(rs.getInt("user_id"));
+					user.setPassword(rs.getString("password"));
 					return true;
 				}
 			}
@@ -73,4 +78,19 @@ public class ControllerUser {
 		}
 		return false;
 	}
+	
+	public boolean userDelete(User user) throws SQLException, Exception{
+		DBConnection conn = new DBConnection();
+		String query = "delete from users where user_id = ?";
+		PreparedStatement statement = conn.getConnection().prepareStatement(query);
+		statement.setInt(1, user.getUser_id());
+		int row = statement.executeUpdate();
+		if(row > 0) {
+	        if (statement != null) statement.close();
+			return true;
+		}
+		return false;
+	}
+	
+	
 }

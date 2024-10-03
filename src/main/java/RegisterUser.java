@@ -49,12 +49,13 @@ public class RegisterUser extends HttpServlet {
         user.setPassword(hashSenha);
         
         try {
-        	boolean verify = controll.userRegister(user);
-        	if(verify) {
+        	
+        	if(controll.userRegister(user)) {
 		        response.setStatus(HttpServletResponse.SC_OK);
 	            out.print("Create User successful");		    
         	}else {
-	            out.print("Análise");		    
+		        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+	            out.print("Error creating user");		    
 
         	}
         }catch (SQLException e) {
@@ -65,5 +66,19 @@ public class RegisterUser extends HttpServlet {
             out.println("Error: " + e.getMessage());
         }
 	}
+	
+	
+	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+        out.println("DELETE request received");
+    }
+
+    @Override
+    protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+        out.println("PUT request received");
+    }
 
 }
