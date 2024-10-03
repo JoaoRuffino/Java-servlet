@@ -18,7 +18,7 @@ public class ServUser extends HttpServlet {
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("text/html");
+		response.setContentType("application/json");
         PrintWriter out = response.getWriter();
         
         ControllerUser controll = new ControllerUser();
@@ -46,7 +46,7 @@ public class ServUser extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("text/html");
+		response.setContentType("application/json");
         PrintWriter out = response.getWriter();
         ControllerUser controll = new ControllerUser();
 
@@ -64,18 +64,20 @@ public class ServUser extends HttpServlet {
 		        response.setStatus(HttpServletResponse.SC_OK);
 		        //String jsonResponse = gson.toJson("Login successful");
 	            
-	            out.print("Login successful");		    
+	            //out.print("Login successful");		    
 	       } 
 			else {
 		        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-		        out.println("Invalid credentials");
+	            out.print("{\"message\": \"Invalid credentials.\"}");
 		    }
 	
 			
 		} catch (SQLException e) {
+	        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             e.printStackTrace();
             out.println("Database error: " + e.getMessage());
         } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             e.printStackTrace();
             out.println("Error: " + e.getMessage());
         }
@@ -85,26 +87,34 @@ public class ServUser extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("text/html");
+		response.setContentType("application/json");
         PrintWriter out = response.getWriter();
         User user = new User();
         ControllerUser controll = new ControllerUser();
         
         String user_id = request.getParameter("user_id");
+        if (user_id == null || user_id.isEmpty()) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            out.print("{\"message\": \"User ID is required.\"}");
+            return;
+        }
         user.setUser_id(Integer.parseInt(user_id));
         try {
         	if(controll.userDelete(user)) {
-		        response.setStatus(HttpServletResponse.SC_OK);
-		        out.print("User successfully deleted");
+		        response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+		        //out.print("User successfully deleted");
         	}else {
 		        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-		        out.print("Fail delete user");
+	            out.print("{\"message\": \"Fail delete user.\"}");
 
         	}
         }catch (SQLException e) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             e.printStackTrace();
             out.println("Database error: " + e.getMessage());
         } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+
             e.printStackTrace();
             out.println("Error: " + e.getMessage());
         }
