@@ -60,15 +60,14 @@ public class ControllerUser {
 	
 	public boolean userRegister(User user) throws SQLException, Exception{
 		DBConnection conn = new DBConnection();
-		String query = "insert into users values (username=?, password=?, email=?, cep=?)";
+		String query = "insert into users(username, password, email, cep) values (?, ?, ?, ?)";
 		PreparedStatement statement = conn.getConnection().prepareStatement(query);
 		statement.setString(1, user.getUsername());
 		statement.setString(2, user.getPassword());
 		statement.setString(3, user.getEmail());
 		statement.setString(4, user.getCep());
-		ResultSet rs = statement.executeQuery();
-		if(rs.next()) {
-			if (rs != null) rs.close();
+		int row = statement.executeUpdate();
+		if(row > 0) {
 	        if (statement != null) statement.close();
 			return true;
 		}

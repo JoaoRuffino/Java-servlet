@@ -2,6 +2,7 @@
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -38,7 +39,7 @@ public class RegisterUser extends HttpServlet {
         String email = request.getParameter("email");
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        String hashSenha = BCrypt.hashpw(password, BCrypt.gensalt());		
+        String hashSenha = BCrypt.hashpw(password, BCrypt.gensalt());
         String cep = request.getParameter("cep");
         
         User user = new User();
@@ -47,6 +48,22 @@ public class RegisterUser extends HttpServlet {
         user.setUsername(username);
         user.setPassword(hashSenha);
         
+        try {
+        	boolean verify = controll.userRegister(user);
+        	if(verify) {
+		        response.setStatus(HttpServletResponse.SC_OK);
+	            out.print("Create User successful");		    
+        	}else {
+	            out.print("Análise");		    
+
+        	}
+        }catch (SQLException e) {
+            e.printStackTrace();
+            out.println("Database error: " + e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            out.println("Error: " + e.getMessage());
+        }
 	}
 
 }
