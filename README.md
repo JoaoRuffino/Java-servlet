@@ -36,7 +36,7 @@ API REST desenvolvida para gerenciamento de usuários com Java Servlet.
   * `email`: Email do usuário.
   * `password`: Senha do usuário.
 * **Sucesso**:
-  * **Status 200**: Login bem-sucedido.
+  * **Status 204**: Login bem-sucedido.
   * **Exemplo de Resposta**:
     ```json
     {
@@ -98,6 +98,42 @@ API REST desenvolvida para gerenciamento de usuários com Java Servlet.
     ```json
     {
       "message": "Fail update user."
+    }
+    ```
+
+---
+
+
+# RegisterUser API  
+API REST para registro de novos usuários com Java Servlet.
+
+## POST /user/register
+* **Descrição**: Registra um novo usuário.
+* **Controller**: ControllerUser
+* **Parâmetros de Corpo**:
+  * `email`: Email do usuário.
+  * `username`: Nome de usuário.
+  * `password`: Senha do usuário (Deve ter entre 4 e 8 caracteres, contendo pelo menos um dígito, uma letra maiúscula e uma letra minúscula).
+  * `cep`: CEP do usuário.
+* **Sucesso**:
+  * **Status 201**: Usuário criado com sucesso.
+* **Falhas**:
+  * **Status 400**: Informações obrigatórias não fornecidas.
+    ```json
+    {
+      "message": "Missing information."
+    }
+    ```
+  * **Status 400**: Senha inválida (não atende aos requisitos de segurança).
+    ```json
+    {
+      "message": "Password not valid."
+    }
+    ```
+  * **Status 500**: Erro no banco de dados ao criar o usuário.
+    ```json
+    {
+      "message": "Error creating user."
     }
     ```
 
