@@ -8,7 +8,8 @@ API REST desenvolvida para aprendizado pessoal
 * Sucesso:
   * Status 200: Sucesso ao recuperar os dados dos usuários.
   * Exemplo:
-    ```[
+    ```json
+    [
   {
     "user_id": 1,
     "email": "user@example.com",
