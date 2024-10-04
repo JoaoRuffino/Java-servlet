@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 import java.util.List;
+
 import com.google.gson.Gson;
 import model.User;
 import controller.ControllerUser;
@@ -124,8 +125,48 @@ public class ServUser extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("text/html");
+    	response.setContentType("application/json");
         PrintWriter out = response.getWriter();
-        out.println("PUT request received");
+        ControllerUser controll = new ControllerUser();
+        
+        String email = request.getParameter("email");
+        String username = request.getParameter("username");
+        String cep = request.getParameter("cep");
+        String user_id = request.getParameter("user_id");
+
+
+        if (email == null || email.isEmpty() || username == null || username.isEmpty() || cep == null || cep.isEmpty() 
+        		|| user_id == null || user_id.isEmpty()) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            out.print("{\"message\": \"Missing information.\"}");
+            return;
+        }
+        
+        User user = new User();
+        user.setCep(cep);
+        user.setEmail(email);
+        user.setUsername(username);
+        user.setUser_id(Integer.parseInt(user_id));
+        try {
+        	if(controll.userUpdate(user)) {
+		        response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+
+        	}else {
+		        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+	            out.print("{\"message\": \"Fail update user.\"}");
+
+        	}
+        }catch (SQLException e) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            e.printStackTrace();
+            out.println("Database error: " + e.getMessage());
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+
+            e.printStackTrace();
+            out.println("Error: " + e.getMessage());
+        }
+        
+        
     }
 }

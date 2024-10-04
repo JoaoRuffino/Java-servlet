@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.mindrot.jbcrypt.BCrypt;
 import java.util.regex.Pattern;
 
-import com.google.gson.Gson;
 
 import controller.ControllerUser;
 import model.User;
@@ -51,6 +50,9 @@ public class RegisterUser extends HttpServlet {
             return;
         }
         if(!pass.matcher(password).matches()) {
+        	// Senha de 8 a 16 caracteres com pelo menos um dígito, pelo menos um
+            // letra minúscula, pelo menos uma letra maiúscula, pelo menos uma
+            // caractere especial sem espaços em branco
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             out.print("{\"message\": \"Password not valid.\"}");
             return;

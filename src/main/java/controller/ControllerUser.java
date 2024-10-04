@@ -91,6 +91,23 @@ public class ControllerUser {
 		}
 		return false;
 	}
-	
+	public boolean userUpdate(User user) throws SQLException, Exception{
+		DBConnection conn = new DBConnection();
+		
+		String query = "update users set email = ?, username = ?, cep = ? where user_id = ?";
+		PreparedStatement statement = conn.getConnection().prepareStatement(query);
+		statement.setString(1, user.getEmail());
+		statement.setString(2, user.getUsername());
+		statement.setString(3, user.getCep());
+		statement.setInt(4, user.getUser_id());
+
+
+		int row = statement.executeUpdate();
+		if(row > 0) {
+	        if (statement != null) statement.close();
+			return true;
+		}
+		return false;
+	}
 	
 }
