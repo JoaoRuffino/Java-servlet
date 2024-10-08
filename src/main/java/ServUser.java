@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 import java.util.List;
-
+import Authenticator.Authenticator;
 import com.google.gson.Gson;
 import model.User;
 import controller.ControllerUser;
@@ -62,7 +62,10 @@ public class ServUser extends HttpServlet {
         try {
 			boolean verify = controll.userLoginDB(user);
 			if (verify) {
-		        response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+				String token = Authenticator.CreateToken(email);
+				response.setContentType("application/json");
+	            response.getWriter().write("{\"token\": \"" + token + "\"}");
+		        response.setStatus(HttpServletResponse.SC_OK);
 	            
 	       } 
 			else {
