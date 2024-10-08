@@ -1,9 +1,19 @@
 # ServUser API  
 API REST desenvolvida para gerenciamento de usuários com Java Servlet.
 
+## Header Model
+* **Descrição**: Necessário para todas as requisições, menos cadastro e login.
+* **Exemplo de Header**:
+    ```json
+      {
+        "Authorization": "Bearer <token>"
+      }
+    ```
+
 ## GET /users
 * **Descrição**: Recupera informações de todos os usuários.
 * **Controller**: ControllerUser
+* **Header**: Necessário header padrão
 * **Parâmetros de Corpo**: Nenhum
 * **Sucesso**:
   * **Status 200**: Sucesso ao recuperar os dados dos usuários.
@@ -29,34 +39,10 @@ API REST desenvolvida para gerenciamento de usuários com Java Servlet.
   
 ---
 
-## POST /users
-* **Descrição**: Realiza o login do usuário.
-* **Controller**: ControllerUser
-* **Parâmetros de Corpo**:
-  * `email`: Email do usuário.
-  * `password`: Senha do usuário.
-* **Sucesso**:
-  * **Status 204**: Login bem-sucedido.
-  * **Exemplo de Resposta**:
-    ```json
-    {
-      "message": "Login successful"
-    }
-    ```
-* **Falhas**:
-  * **Status 401**: Credenciais inválidas.
-    ```json
-    {
-      "message": "Invalid credentials."
-    }
-    ```
-  * **Status 500**: Erro no banco de dados.
-
----
-
 ## DELETE /users
 * **Descrição**: Remove um usuário pelo ID.
 * **Controller**: ControllerUser
+* **Header**: Necessário header padrão
 * **Parâmetros de Corpo**:
   * `user_id`: ID do usuário a ser removido.
 * **Sucesso**:
@@ -80,6 +66,7 @@ API REST desenvolvida para gerenciamento de usuários com Java Servlet.
 ## PUT /users
 * **Descrição**: Atualiza as informações de um usuário existente.
 * **Controller**: ControllerUser
+* **Header**: Necessário header padrão
 * **Parâmetros de Corpo**:
   * `email`: Novo email do usuário.
   * `username`: Novo nome de usuário.
@@ -104,7 +91,7 @@ API REST desenvolvida para gerenciamento de usuários com Java Servlet.
 ---
 
 
-# RegisterUser API  
+# Register User API  
 API REST para registro de novos usuários com Java Servlet.
 
 ## POST /user/register
@@ -136,5 +123,31 @@ API REST para registro de novos usuários com Java Servlet.
       "message": "Error creating user."
     }
     ```
+---
+# Login User API  
+API REST para registro de novos usuários com Java Servlet.
+
+## POST /user/login
+* **Descrição**: Realiza o login do usuário.
+* **Controller**: ControllerUser
+* **Parâmetros de Corpo**:
+  * `email`: Email do usuário.
+  * `password`: Senha do usuário.
+* **Sucesso**:
+  * **Status 204**: Login bem-sucedido.
+  * **Exemplo de Resposta**:
+    ```json
+    {
+      "message": "Login successful"
+    }
+    ```
+* **Falhas**:
+  * **Status 401**: Credenciais inválidas.
+    ```json
+    {
+      "message": "Invalid credentials."
+    }
+    ```
+  * **Status 500**: Erro no banco de dados.
 
 ---
