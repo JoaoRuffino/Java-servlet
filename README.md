@@ -36,7 +36,8 @@ API REST desenvolvida para gerenciamento de usuários com Java Servlet.
     ```
 * **Falhas**:
   * **Status 500**: Erro ao acessar o banco de dados.
-  
+  * **Status 401**: Não autorizado (Pode estar faltando o header).
+
 ---
 
 ## DELETE /users
@@ -60,6 +61,7 @@ API REST desenvolvida para gerenciamento de usuários com Java Servlet.
       "message": "Fail delete user."
     }
     ```
+  * **Status 401**: Não autorizado (Pode estar faltando o header).
 
 ---
 
@@ -87,6 +89,7 @@ API REST desenvolvida para gerenciamento de usuários com Java Servlet.
       "message": "Fail update user."
     }
     ```
+  * **Status 401**: Não autorizado (Pode estar faltando o header).
 
 ---
 
