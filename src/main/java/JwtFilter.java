@@ -36,7 +36,7 @@ public class JwtFilter extends HttpFilter implements Filter {
 	    HttpServletResponse res = (HttpServletResponse) response;
 
 	    String requestURI = req.getRequestURI();
-	    System.out.println(requestURI);
+	    //System.out.println(requestURI);
 	    if (requestURI.equals("/FirstProjeto/user/login") || requestURI.equals("/FirstProjeto/user/register")) {
 	        chain.doFilter(req, res);
 	        return;
