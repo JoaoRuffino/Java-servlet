@@ -38,9 +38,11 @@ public class ServUser extends HttpServlet {
             
             
         } catch (SQLException e) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             e.printStackTrace();
             out.println("Database error: " + e.getMessage());
         } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             e.printStackTrace();
             out.println("Error: " + e.getMessage());
         }
