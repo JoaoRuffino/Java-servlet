@@ -60,12 +60,10 @@ public class ServUser extends HttpServlet {
         user.setPassword(password);
         
         try {
-			
-			if (controll.userLoginDB(user)) {
-		        response.setStatus(HttpServletResponse.SC_OK);
-		        //String jsonResponse = gson.toJson("Login successful");
+			boolean verify = controll.userLoginDB(user);
+			if (verify) {
+		        response.setStatus(HttpServletResponse.SC_NO_CONTENT);
 	            
-	            //out.print("Login successful");		    
 	       } 
 			else {
 		        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

@@ -1,6 +1,6 @@
 ServUser.class
 db\DBConnection.class
-controller\Consume.class
+Authenticator\Authenticator.class
 model\User.class
 RegisterUser.class
 controller\ControllerUser.class
