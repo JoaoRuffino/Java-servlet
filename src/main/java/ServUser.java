@@ -7,10 +7,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 import java.util.List;
-import Authenticator.Authenticator;
 import com.google.gson.Gson;
 import model.User;
 import controller.ControllerUser;
+
+
 @WebServlet("/users")
 
 
@@ -45,47 +46,7 @@ public class ServUser extends HttpServlet {
         }
     }
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setContentType("application/json");
-        PrintWriter out = response.getWriter();
-        ControllerUser controll = new ControllerUser();
-
-        User user = new User();
-        
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        
-        user.setEmail(email);
-        user.setPassword(password);
-        
-        try {
-			boolean verify = controll.userLoginDB(user);
-			if (verify) {
-				String token = Authenticator.CreateToken(email);
-				response.setContentType("application/json");
-	            response.getWriter().write("{\"token\": \"" + token + "\"}");
-		        response.setStatus(HttpServletResponse.SC_OK);
-	            
-	       } 
-			else {
-		        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-	            out.print("{\"message\": \"Invalid credentials.\"}");
-		    }
-	
-			
-		} catch (SQLException e) {
-	        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            e.printStackTrace();
-            out.println("Database error: " + e.getMessage());
-        } catch (Exception e) {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            e.printStackTrace();
-            out.println("Error: " + e.getMessage());
-        }
-        
-        
-    }
+   
 
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -4,13 +4,12 @@ import java.util.Date;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.SignatureException;
 
 public class Authenticator {
 	//Chave secreta para assinatura de token - trocar localização
     private static final String SECRET_KEY = "SecretKey";
 
-	public static String CreateToken(String email) {
+	public static String createToken(String email) {
 	    SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
 
 		String token = Jwts.builder()
@@ -22,21 +21,15 @@ public class Authenticator {
 		return token;
 	}
 	
-	public static boolean ValidateToken(String token) {
-		try {
+	public static Claims validateToken(String token) {
 			Claims claims = Jwts.parser()
 	                .setSigningKey(SECRET_KEY)
 	                .parseClaimsJws(token)
 	                .getBody();
-			if(!isTokenExpired(claims)) {
-				return true;
-			}else {
-				return false;
+			
+			return claims;
 			}
-		}catch (SignatureException e) {
-			return false;
-        }
-	}
+		
 	public static boolean isTokenExpired(Claims claims) {
         return claims.getExpiration().before(new Date());
     }
