@@ -15,8 +15,29 @@ public class Product {
 	public String weight;
 	public String color;
 	
+	public Product() {
+		
+	}
 	
 	
+	public Product(Integer idProduct, String manufacturer, String name, String brand, String model, String idCategory,
+			String description, String unitMeasure, String width, String heigh, String depth, String weight,
+			String color) {
+		super();
+		this.idProduct = idProduct;
+		this.manufacturer = manufacturer;
+		this.name = name;
+		this.brand = brand;
+		this.model = model;
+		this.idCategory = idCategory;
+		this.description = description;
+		this.unitMeasure = unitMeasure;
+		this.width = width;
+		this.heigh = heigh;
+		this.depth = depth;
+		this.weight = weight;
+		this.color = color;
+	}
 	public Integer getIdProduct() {
 		return idProduct;
 	}
