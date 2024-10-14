@@ -154,3 +154,85 @@ API REST para registro de novos usuários com Java Servlet.
   * **Status 500**: Erro no banco de dados.
 
 ---
+
+## GET /products
+* **Descrição**: Recupera informações de todos os produtos.
+* **Controller**: ControllerProduct
+* **Parâmetros de Corpo**: Nenhum
+* **Sucesso**:
+  * **Status 200**: Sucesso ao recuperar os dados dos usuários.
+  * **Exemplo de Resposta**:
+    ```json
+    [
+      {
+        "idProduct": 1,
+        "manufacturer": "Fabricante X",
+        "name": "Produto Y",
+        "brand": "Marca Z",
+        "model": "Modelo A",
+        "idCategory": "1",
+        "description": "Descrição do produto",
+        "unitMeasure": "Unidade",
+        "width": "10.000",
+        "heigh": "20.000",
+        "depth": "30.000",
+        "weight": "1.500",
+        "color": "red"
+    }
+    ]
+    ```
+* **Falhas**:
+  * **Status 500**: Erro ao acessar o banco de dados.
+
+---
+
+## PUT /all/products
+* **Descrição**: Editar produtos.
+* **Controller**: ControllerProduct
+* **Header**: Header padrão
+* **Parâmetros de Corpo**:
+  * `IdProduct`: Id do produto.
+  * `manufacturer`: Fabricante.
+  * `name`: Nome do Produto.
+  * `brand`: Marca.
+  * `model`: Modelo.
+  * `idCategory`: Id da categoria.
+  * `description`: Descrição do produto.
+  * `unitMeasure`: Unidade de medida.
+  * `width`: Largura.
+  * `heigh`: Altura.
+  * `depth`: Profundidade.
+  * `weight`: Peso.
+  * `color`: Cor.
+
+* **Sucesso**:
+  * **Status 204**: Sucesso ao fazer o update.
+* **Falhas**:
+  * **Status 400**: Faltando informação.
+  ```json
+    {
+      "message": "Missing information."
+    }
+    ```
+  * **Status 500**: Erro ao acessar o banco de dados.
+
+---
+
+## DELETE /all/products
+* **Descrição**: Deletar produtos.
+* **Controller**: ControllerProduct
+* **Header**: Header padrão
+* **Parâmetros de Corpo**:
+  * `IdProduct`: Id do produto.
+* **Sucesso**:
+  * **Status 204**: Sucesso ao fazer o delete.
+* **Falhas**:
+  * **Status 400**: Faltando informação.
+  ```json
+    {
+      "message": "Product ID is required."
+    }
+    ```
+  * **Status 500**: Erro ao acessar o banco de dados.
+
+---
