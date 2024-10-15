@@ -22,8 +22,59 @@ public class ServProduct extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		response.setContentType("application/json");
+		PrintWriter out = response.getWriter();
+		ControllerProduct controll = new ControllerProduct();
+
+		String idProduct = request.getParameter("idProduct");
+		String manufacturer = request.getParameter("manufacturer");
+		String name = request.getParameter("name");
+		String brand = request.getParameter("brand");
+		String model = request.getParameter("model");
+		String idCategory = request.getParameter("idCategory");
+		String description = request.getParameter("description");
+		String unitMeasure = request.getParameter("unitMeasure");
+		String width = request.getParameter("width");
+		String heigh = request.getParameter("heigh");
+		String depth = request.getParameter("depth");
+		String weight = request.getParameter("weight");
+		String color = request.getParameter("color");
+
+		String[] parameters = { idProduct, manufacturer, name, brand, model, idCategory, description, unitMeasure,
+				width, heigh, depth, weight, color };
+
+		for (String param : parameters) {
+			if (param == null || param.isEmpty()) {
+				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+				out.print("{\"message\": \"Missing information.\"}");
+				return;
+			}
+		}
+		Product product = new Product(Integer.parseInt(idProduct), manufacturer, name, brand, model, idCategory, description, unitMeasure, width, heigh,
+				depth, weight, color);
+
+		try {
+			if (controll.productRegister(product)) {
+				response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+
+			} else {
+				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+				out.print("{\"message\": \"Fail register Product.\"}");
+
+			}
+		} catch (SQLException e) {
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			e.printStackTrace();
+			out.println("Database error: " + e.getMessage());
+		} catch (Exception e) {
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+
+			e.printStackTrace();
+			out.println("Error: " + e.getMessage());
+		}
 
 	}
+		
 
 	@Override
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response)
