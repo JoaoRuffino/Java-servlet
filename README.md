@@ -236,3 +236,35 @@ API REST para registro de novos usuários com Java Servlet.
   * **Status 500**: Erro ao acessar o banco de dados.
 
 ---
+
+## POST /all/products
+* **Descrição**: Adicionar produtos.
+* **Controller**: ControllerProduct
+* **Header**: Header padrão
+* **Parâmetros de Corpo**:
+  * `IdProduct`: Id do produto.
+  * `manufacturer`: Fabricante.
+  * `name`: Nome do Produto.
+  * `brand`: Marca.
+  * `model`: Modelo.
+  * `idCategory`: Id da categoria.
+  * `description`: Descrição do produto.
+  * `unitMeasure`: Unidade de medida.
+  * `width`: Largura.
+  * `heigh`: Altura.
+  * `depth`: Profundidade.
+  * `weight`: Peso.
+  * `color`: Cor.
+
+* **Sucesso**:
+  * **Status 204**: Sucesso ao adicionar produto.
+* **Falhas**:
+  * **Status 400**: Faltando informação.
+  ```json
+    {
+      "message": "Missing information."
+    }
+    ```
+  * **Status 500**: Erro ao acessar o banco de dados.
+
+---
