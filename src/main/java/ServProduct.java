@@ -9,8 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import controller.ControllerProduct;
 import model.Product;
+import DAO.ProductDao;
+import DAO.ProductDaoImpl;
 
 @WebServlet("/all/products")
 public class ServProduct extends HttpServlet {
@@ -20,12 +21,10 @@ public class ServProduct extends HttpServlet {
 		super();
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("application/json");
 		PrintWriter out = response.getWriter();
-		ControllerProduct controll = new ControllerProduct();
-
+		ProductDao productdao = new ProductDaoImpl();
 		String idProduct = request.getParameter("idProduct");
 		String manufacturer = request.getParameter("manufacturer");
 		String name = request.getParameter("name");
@@ -39,10 +38,8 @@ public class ServProduct extends HttpServlet {
 		String depth = request.getParameter("depth");
 		String weight = request.getParameter("weight");
 		String color = request.getParameter("color");
-
 		String[] parameters = { idProduct, manufacturer, name, brand, model, idCategory, description, unitMeasure,
 				width, heigh, depth, weight, color };
-
 		for (String param : parameters) {
 			if (param == null || param.isEmpty()) {
 				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -52,15 +49,12 @@ public class ServProduct extends HttpServlet {
 		}
 		Product product = new Product(Integer.parseInt(idProduct), manufacturer, name, brand, model, idCategory, description, unitMeasure, width, heigh,
 				depth, weight, color);
-
 		try {
-			if (controll.productRegister(product)) {
+			if (productdao.setProduct(product)) {
 				response.setStatus(HttpServletResponse.SC_NO_CONTENT);
-
 			} else {
 				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 				out.print("{\"message\": \"Fail register Product.\"}");
-
 			}
 		} catch (SQLException e) {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -77,12 +71,10 @@ public class ServProduct extends HttpServlet {
 		
 
 	@Override
-	protected void doDelete(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("application/json");
 		PrintWriter out = response.getWriter();
-		ControllerProduct controll = new ControllerProduct();
-
+		ProductDao productdao = new ProductDaoImpl();
 		String idProduct = request.getParameter("idProduct");
 		if (idProduct == null || idProduct.isEmpty()) {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -91,7 +83,7 @@ public class ServProduct extends HttpServlet {
 		}
 
 		try {
-			if (controll.productDelete(Integer.parseInt(idProduct))) {
+			if (productdao.deleteProduct(Integer.parseInt(idProduct))) {
 				response.setStatus(HttpServletResponse.SC_NO_CONTENT);
 
 			} else {
@@ -117,7 +109,7 @@ public class ServProduct extends HttpServlet {
 			throws ServletException, IOException {
 		response.setContentType("application/json");
 		PrintWriter out = response.getWriter();
-		ControllerProduct controll = new ControllerProduct();
+		ProductDao productdao = new ProductDaoImpl();
 
 		String idProduct = request.getParameter("idProduct");
 		String manufacturer = request.getParameter("manufacturer");
@@ -147,7 +139,7 @@ public class ServProduct extends HttpServlet {
 				depth, weight, color);
 
 		try {
-			if (controll.productUpdate(product)) {
+			if (productdao.updateProduct(product)) {
 				response.setStatus(HttpServletResponse.SC_NO_CONTENT);
 
 			} else {

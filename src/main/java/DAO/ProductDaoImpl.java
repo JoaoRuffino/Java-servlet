@@ -1,4 +1,4 @@
-package controller;
+package DAO;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,11 +9,10 @@ import java.util.List;
 import db.DBConnection;
 import model.Product;
 
-public class ControllerProduct {
-
+public class ProductDaoImpl implements ProductDao {
 	
 	
-	public List<Product> consumeProduct() throws SQLException, Exception{
+	public List<Product> getProduct() throws SQLException, Exception{
 		
 		DBConnection conn = new DBConnection();
 		String query = "select * from products";
@@ -21,20 +20,10 @@ public class ControllerProduct {
 		PreparedStatement statement = conn.getConnection().prepareStatement(query);
 		ResultSet rs = statement.executeQuery();
 		while(rs.next()) {
-			Product product = new Product();
-			product.setIdProduct(rs.getInt("idProduct"));
-			product.setManufacturer(rs.getString("manufacturer"));
-			product.setName(rs.getString("name"));
-			product.setBrand(rs.getString("brand"));
-			product.setModel(rs.getString("model"));
-			product.setIdCategory(rs.getString("idCategory"));
-			product.setDescription(rs.getString("description"));
-			product.setUnitMeasure(rs.getString("unitMeasure"));
-			product.setWidth(rs.getString("width"));
-			product.setHeigh(rs.getString("heigh"));
-			product.setDepth(rs.getString("depth"));
-			product.setWeight(rs.getString("weight"));
-			product.setColor(rs.getString("color"));
+			Product product = new Product(rs.getInt("idProduct"), rs.getString("manufacturer"), rs.getString("name"),
+					rs.getString("brand"), rs.getString("model"), rs.getString("idCategory"), rs.getString("description"), 
+					rs.getString("unitMeasure"), rs.getString("width"), rs.getString("heigh"), 
+					rs.getString("depth"), rs.getString("weight"), rs.getString("color"));
 			products.add(product);
 		}
 		if (rs != null) rs.close();
@@ -43,7 +32,7 @@ public class ControllerProduct {
 		return products;
 	}
 	
-	public boolean productRegister(Product product) throws SQLException, Exception{
+	public  boolean setProduct(Product product) throws SQLException, Exception {
 		DBConnection conn = new DBConnection();
 		String query = "insert into products(idProduct, manufacturer, name, brand, model, idCategory, description, "
 				+ "unitMeasure, width, heigh, depth, weight, color) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -69,7 +58,7 @@ public class ControllerProduct {
 		return false;
 	}
 	
-	public boolean productDelete(Integer idProduct) throws SQLException, Exception{
+	public boolean deleteProduct(Integer idProduct) throws SQLException, Exception{
 		DBConnection conn = new DBConnection();
 		String query = "delete from products where idProduct = ?";
 		PreparedStatement statement = conn.getConnection().prepareStatement(query);
@@ -82,7 +71,7 @@ public class ControllerProduct {
 		return false;
 	}
 	
-	public boolean productUpdate(Product product) throws SQLException, Exception{
+	public boolean updateProduct(Product product) throws SQLException, Exception{
 		DBConnection conn = new DBConnection();
 		String query = "UPDATE products SET manufacturer = ?, name = ?, brand = ?, model = ?, idCategory = ?, description = ?, unitMeasure = ?, "
 				+ "width = ?, heigh = ?, depth = ?, weight = ?, color = ? WHERE idProduct = ?";
@@ -108,7 +97,4 @@ public class ControllerProduct {
 		}
 		return false;
 	}
-	
 }
-
-

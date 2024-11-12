@@ -3,6 +3,7 @@
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -13,7 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 
-import controller.ControllerProduct;
+import DAO.ProductDao;
+import DAO.ProductDaoImpl;
 import model.Product;
 
 
@@ -30,17 +32,16 @@ public class GetProduct extends HttpServlet {
 		response.setContentType("application/json");
         PrintWriter out = response.getWriter();
         
-        ControllerProduct controll = new ControllerProduct();
         try {
         	//out.println("GET request received");
-            List<Product> products = controll.consumeProduct();
-            
+        	List<Product> products = new ArrayList<>();
+        	ProductDao productdao = new ProductDaoImpl();
+    		products = productdao.getProduct();
+    		
             Gson gson = new Gson();
             String jsonResponse = gson.toJson(products);
             response.setStatus(HttpServletResponse.SC_OK);
             out.print(jsonResponse);
-            
-           
             
             
         } catch (SQLException e) {
