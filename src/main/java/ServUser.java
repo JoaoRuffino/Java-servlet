@@ -5,12 +5,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.sql.SQLException;
+//import java.sql.SQLException;
 import java.util.List;
 import com.google.gson.Gson;
-import model.User;
-import controller.ControllerUser;
 
+import DAO.UserDao;
+import DAO.UserDaoImpl;
+import model.User;
 
 @WebServlet("/users")
 
@@ -22,25 +23,18 @@ public class ServUser extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("application/json");
         PrintWriter out = response.getWriter();
-        
-        ControllerUser controll = new ControllerUser();
+    	UserDao userdao = new UserDaoImpl();
+
         
         try {
         	//out.println("GET request received");
-            List<User> users = controll.consumeUsers();
+            List<User> users = userdao.getUser();
             
             Gson gson = new Gson();
             String jsonResponse = gson.toJson(users);
             
             out.print(jsonResponse);
             
-           
-            
-            
-        } catch (SQLException e) {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            e.printStackTrace();
-            out.println("Database error: " + e.getMessage());
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             e.printStackTrace();
@@ -55,7 +49,7 @@ public class ServUser extends HttpServlet {
 		response.setContentType("application/json");
         PrintWriter out = response.getWriter();
         User user = new User();
-        ControllerUser controll = new ControllerUser();
+    	UserDao userdao = new UserDaoImpl();
         
         String user_id = request.getParameter("user_id");
         if (user_id == null || user_id.isEmpty()) {
@@ -65,7 +59,7 @@ public class ServUser extends HttpServlet {
         }
         user.setUser_id(Integer.parseInt(user_id));
         try {
-        	if(controll.userDelete(user)) {
+        	if(userdao.deleteUser(user)) {
 		        response.setStatus(HttpServletResponse.SC_NO_CONTENT);
 		        //out.print("User successfully deleted");
         	}else {
@@ -73,10 +67,6 @@ public class ServUser extends HttpServlet {
 	            out.print("{\"message\": \"Fail delete user.\"}");
 
         	}
-        }catch (SQLException e) {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            e.printStackTrace();
-            out.println("Database error: " + e.getMessage());
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 
@@ -91,7 +81,7 @@ public class ServUser extends HttpServlet {
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	response.setContentType("application/json");
         PrintWriter out = response.getWriter();
-        ControllerUser controll = new ControllerUser();
+    	UserDao userdao = new UserDaoImpl();
         
         String email = request.getParameter("email");
         String username = request.getParameter("username");
@@ -112,7 +102,7 @@ public class ServUser extends HttpServlet {
         user.setUsername(username);
         user.setUser_id(Integer.parseInt(user_id));
         try {
-        	if(controll.userUpdate(user)) {
+        	if(userdao.updateUser(user)) {
 		        response.setStatus(HttpServletResponse.SC_NO_CONTENT);
 
         	}else {
@@ -120,11 +110,7 @@ public class ServUser extends HttpServlet {
 	            out.print("{\"message\": \"Fail update user.\"}");
 
         	}
-        }catch (SQLException e) {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            e.printStackTrace();
-            out.println("Database error: " + e.getMessage());
-        } catch (Exception e) {
+        }catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 
             e.printStackTrace();

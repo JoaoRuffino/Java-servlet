@@ -13,7 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.mindrot.jbcrypt.BCrypt;
 
-import controller.ControllerUser;
+import DAO.UserDao;
+import DAO.UserDaoImpl;
 import model.User;
 
 
@@ -34,7 +35,7 @@ public class RegisterUser extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("application/json");
         PrintWriter out = response.getWriter();
-        ControllerUser controll = new ControllerUser();
+    	UserDao userdao = new UserDaoImpl();
         String regex = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{4,8}$";
         Pattern pass = Pattern.compile(regex);
         
@@ -67,7 +68,7 @@ public class RegisterUser extends HttpServlet {
         
         try {
         	
-        	if(controll.userRegister(user)) {
+        	if(userdao.setUser(user)) {
 		        response.setStatus(HttpServletResponse.SC_CREATED);
         	}else {
 		        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
