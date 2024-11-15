@@ -68,8 +68,7 @@ public class ServProduct extends HttpServlet {
 		}
 
 	}
-		
-
+	
 	@Override
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("application/json");

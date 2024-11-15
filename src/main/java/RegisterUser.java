@@ -27,16 +27,12 @@ public class RegisterUser extends HttpServlet {
         super();
         // TODO Auto-generated constructor stub
     }
-
-	
-	
-	
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("application/json");
         PrintWriter out = response.getWriter();
     	UserDao userdao = new UserDaoImpl();
-        String regex = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{4,8}$";
+        String regex = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$";
         Pattern pass = Pattern.compile(regex);
         
         String email = request.getParameter("email");
