@@ -80,14 +80,22 @@ public class DBQuery {
 		return 0;
 	}
 
-	public ResultSet select(String where) {
-		String sql = "SELECT "+  this.joinElements(this.fieldsName, ", ") + " FROM " + this.tableName;
+	public ResultSet select(String view) {
+		String sql = "SELECT "+  this.joinElements(this.fieldsName, ", ");
+		if(view!=""){
+			sql += ", " + view;
+		}
+		sql += " FROM " + this.tableName;
 		System.out.print(sql);
 		return this.query(sql);
 	}
 	//Overload para where
-	public ResultSet select(String where, String comp) {
-		String sql = "SELECT "+  this.joinElements(this.fieldsName, ", ") + " FROM " + this.tableName;
+	public ResultSet select(String where, String comp, String view) {
+		String sql = "SELECT "+  this.joinElements(this.fieldsName, ", ");
+		if(view!=""){
+			sql += ", " + view;
+		}
+		sql += " FROM " + this.tableName;
 		if(where!=""){
 			sql += " WHERE " + where + " = '" + comp + "'";
 		}

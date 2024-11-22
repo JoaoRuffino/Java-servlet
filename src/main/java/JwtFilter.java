@@ -1,6 +1,8 @@
 
 
 import java.io.IOException;
+import java.io.PrintWriter;
+
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -14,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import Authenticator.Authenticator;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.SignatureException;
 
 
@@ -34,7 +37,8 @@ public class JwtFilter extends HttpFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 	    HttpServletRequest req = (HttpServletRequest) request;
 	    HttpServletResponse res = (HttpServletResponse) response;
-
+	    response.setContentType("application/json");
+        PrintWriter out = response.getWriter();
 	    String requestURI = req.getRequestURI();
 	    //System.out.println(requestURI);
 	    if (requestURI.equals("/FirstProjeto/user/login") || requestURI.equals("/FirstProjeto/user/register") 
@@ -54,15 +58,17 @@ public class JwtFilter extends HttpFilter implements Filter {
 	        Claims claims = Authenticator.validateToken(token);
 	        if (Authenticator.isTokenExpired(claims)) {
 	            res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-	            response.getWriter().write("Token expirado.");
+	            out.print("{\"message\": \"Token expirado.\"}");
 	            return;
 	        }
-
 	        request.setAttribute("email", claims.getSubject());
 	        chain.doFilter(req, res);
+	    } catch (ExpiredJwtException e) {
+	        res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            out.print("{\"message\": \"Token expirado.\"}");
 	    } catch (SignatureException e) {
 	        res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-	        response.getWriter().write("Token inválido.");
+            out.print("{\"message\": \"Token expirado.\"}");
 	    }
 	}
 

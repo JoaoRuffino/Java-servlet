@@ -16,11 +16,11 @@ public class UserDaoImpl implements UserDao {
 	private DBQuery dbQuery;
 	
 	public UserDaoImpl() {
-		this.dbQuery = new DBQuery("users", "user_id, username, email, cep, password", "user_id");
+		this.dbQuery = new DBQuery("users", "username, email, cep, password", "user_id");
 	}
 	public List<User> getUser() throws SQLException {
 		List<User> users = new ArrayList<>();
-		try(ResultSet rs = dbQuery.select("")){
+		try(ResultSet rs = dbQuery.select("user_id")){
 			while(rs.next()) {
 				User user = new User();
 				user.setUser_id(rs.getInt("user_id"));
@@ -34,7 +34,7 @@ public class UserDaoImpl implements UserDao {
 	}
 	
 	public boolean loginUser(User user) throws SQLException, Exception {
-		try(ResultSet rs = dbQuery.select("email", user.getEmail())){
+		try(ResultSet rs = dbQuery.select("email", user.getEmail(), "user_id")){
 			if(rs.next()) {
 				if(rs.getString("email") != null) {
 					if(BCrypt.checkpw(user.getPassword(), rs.getString("password"))) {
@@ -50,8 +50,17 @@ public class UserDaoImpl implements UserDao {
 		}
 		return false;
 	}
-	
 	public boolean setUser(User user) throws SQLException, Exception{
+		String[] values = new String[]{
+	            user.getUsername(),
+	            user.getEmail(),
+	            user.getCep(),
+	            user.getPassword()
+	        };
+	        return dbQuery.insert(values) > 0;
+	}
+	
+	public boolean setUsgggger(User user) throws SQLException, Exception{
 		DBConnection conn = new DBConnection();
 		String query = "insert into users(username, password, email, cep) values (?, ?, ?, ?)";
 		PreparedStatement statement = conn.getConnection().prepareStatement(query);

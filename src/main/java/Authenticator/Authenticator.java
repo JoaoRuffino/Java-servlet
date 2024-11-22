@@ -4,6 +4,7 @@ import java.util.Date;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 
 public class Authenticator {
 	//Chave secreta para assinatura de token - trocar localização
@@ -22,13 +23,16 @@ public class Authenticator {
 	}
 	
 	public static Claims validateToken(String token) {
-			Claims claims = Jwts.parser()
+	    try {
+	        return Jwts.parser()
 	                .setSigningKey(SECRET_KEY)
 	                .parseClaimsJws(token)
 	                .getBody();
-			
-			return claims;
-			}
+	    } catch (ExpiredJwtException e) {
+	        // Retornar as claims mesmo para verificar a expiração se necessário
+	        return e.getClaims();
+	    }
+	}
 		
 	public static boolean isTokenExpired(Claims claims) {
         return claims.getExpiration().before(new Date());
