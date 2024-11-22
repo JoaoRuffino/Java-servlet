@@ -16,6 +16,7 @@ import org.mindrot.jbcrypt.BCrypt;
 import DAO.UserDao;
 import DAO.UserDaoImpl;
 import model.User;
+import utilities.Utilities;
 
 
 @WebServlet("/user/register")
@@ -31,18 +32,24 @@ public class RegisterUser extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("application/json");
         PrintWriter out = response.getWriter();
+    	Utilities util = new Utilities();
     	UserDao userdao = new UserDaoImpl();
         String regex = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$";
         Pattern pass = Pattern.compile(regex);
         
-        String email = request.getParameter("email");
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        String cep = request.getParameter("cep");
+        String email = util.clearSqlInjection(request.getParameter("email"));
+        String username = util.clearSqlInjection(request.getParameter("username"));
+        String password = util.clearSqlInjection(request.getParameter("password"));
+        String cep = util.clearSqlInjection(request.getParameter("cep"));
         if (email == null || email.isEmpty() || username == null || username.isEmpty() || password == null || password.isEmpty()
         		|| cep == null || cep.isEmpty()) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             out.print("{\"message\": \"Missing information.\"}");
+            return;
+        }
+        if(!util.checkEmail(email)) {
+        	response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            out.print("{\"message\": \"Invalid email.\"}");
             return;
         }
         if(!pass.matcher(password).matches()) {

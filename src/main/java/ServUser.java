@@ -12,6 +12,7 @@ import com.google.gson.Gson;
 import DAO.UserDao;
 import DAO.UserDaoImpl;
 import model.User;
+import utilities.Utilities;
 
 @WebServlet("/users")
 
@@ -82,12 +83,17 @@ public class ServUser extends HttpServlet {
     	response.setContentType("application/json");
         PrintWriter out = response.getWriter();
     	UserDao userdao = new UserDaoImpl();
-        
-        String email = request.getParameter("email");
-        String username = request.getParameter("username");
-        String cep = request.getParameter("cep");
-        String user_id = request.getParameter("user_id");
+    	Utilities util = new Utilities();
 
+        String email = util.clearSqlInjection(request.getParameter("email"));
+        String username = util.clearSqlInjection(request.getParameter("username"));
+        String cep = util.clearSqlInjection(request.getParameter("cep"));
+        String user_id = util.clearSqlInjection(request.getParameter("user_id"));
+        if(!util.checkEmail(email)) {
+        	response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            out.print("{\"message\": \"Invalid email.\"}");
+            return;
+        }
 
         if (email == null || email.isEmpty() || username == null || username.isEmpty() || cep == null || cep.isEmpty() 
         		|| user_id == null || user_id.isEmpty()) {

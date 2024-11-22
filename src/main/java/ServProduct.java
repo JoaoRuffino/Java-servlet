@@ -10,10 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import model.Product;
+import utilities.Utilities;
 import DAO.ProductDao;
 import DAO.ProductDaoImpl;
 
-@WebServlet("/all/products")
+@WebServlet("/products")
 public class ServProduct extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -25,21 +26,24 @@ public class ServProduct extends HttpServlet {
 		response.setContentType("application/json");
 		PrintWriter out = response.getWriter();
 		ProductDao productdao = new ProductDaoImpl();
-		String idProduct = request.getParameter("idProduct");
-		String manufacturer = request.getParameter("manufacturer");
-		String name = request.getParameter("name");
-		String brand = request.getParameter("brand");
-		String model = request.getParameter("model");
-		String idCategory = request.getParameter("idCategory");
-		String description = request.getParameter("description");
-		String unitMeasure = request.getParameter("unitMeasure");
-		String width = request.getParameter("width");
-		String heigh = request.getParameter("heigh");
-		String depth = request.getParameter("depth");
-		String weight = request.getParameter("weight");
-		String color = request.getParameter("color");
+    	Utilities util = new Utilities();
+		String idProduct = util.clearSqlInjection(request.getParameter("idProduct"));
+		String manufacturer = util.clearSqlInjection(request.getParameter("manufacturer"));
+		String name = util.clearSqlInjection(request.getParameter("name"));
+		String brand = util.clearSqlInjection(request.getParameter("brand"));
+		String model = util.clearSqlInjection(request.getParameter("model"));
+		String idCategory = util.clearSqlInjection(request.getParameter("idCategory"));
+		String description = util.clearSqlInjection(request.getParameter("description"));
+		String unitMeasure = util.clearSqlInjection(request.getParameter("unitMeasure"));
+		String width = util.clearSqlInjection(request.getParameter("width"));
+		String heigh = util.clearSqlInjection(request.getParameter("heigh"));
+		String depth = util.clearSqlInjection(request.getParameter("depth"));
+		String weight = util.clearSqlInjection(request.getParameter("weight"));
+		String color = util.clearSqlInjection(request.getParameter("color"));
+		
 		String[] parameters = { idProduct, manufacturer, name, brand, model, idCategory, description, unitMeasure,
 				width, heigh, depth, weight, color };
+		
 		for (String param : parameters) {
 			if (param == null || param.isEmpty()) {
 				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -109,20 +113,20 @@ public class ServProduct extends HttpServlet {
 		response.setContentType("application/json");
 		PrintWriter out = response.getWriter();
 		ProductDao productdao = new ProductDaoImpl();
-
-		String idProduct = request.getParameter("idProduct");
-		String manufacturer = request.getParameter("manufacturer");
-		String name = request.getParameter("name");
-		String brand = request.getParameter("brand");
-		String model = request.getParameter("model");
-		String idCategory = request.getParameter("idCategory");
-		String description = request.getParameter("description");
-		String unitMeasure = request.getParameter("unitMeasure");
-		String width = request.getParameter("width");
-		String heigh = request.getParameter("heigh");
-		String depth = request.getParameter("depth");
-		String weight = request.getParameter("weight");
-		String color = request.getParameter("color");
+		Utilities util = new Utilities();
+		String idProduct = util.clearSqlInjection(request.getParameter("idProduct"));
+		String manufacturer = util.clearSqlInjection(request.getParameter("manufacturer"));
+		String name = util.clearSqlInjection(request.getParameter("name"));
+		String brand = util.clearSqlInjection(request.getParameter("brand"));
+		String model = util.clearSqlInjection(request.getParameter("model"));
+		String idCategory = util.clearSqlInjection(request.getParameter("idCategory"));
+		String description = util.clearSqlInjection(request.getParameter("description"));
+		String unitMeasure = util.clearSqlInjection(request.getParameter("unitMeasure"));
+		String width = util.clearSqlInjection(request.getParameter("width"));
+		String heigh = util.clearSqlInjection(request.getParameter("heigh"));
+		String depth = util.clearSqlInjection(request.getParameter("depth"));
+		String weight = util.clearSqlInjection(request.getParameter("weight"));
+		String color = util.clearSqlInjection(request.getParameter("color"));
 
 		String[] parameters = { idProduct, manufacturer, name, brand, model, idCategory, description, unitMeasure,
 				width, heigh, depth, weight, color };

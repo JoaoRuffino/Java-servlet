@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import Authenticator.Authenticator;
 import model.User;
+import utilities.Utilities;
 import DAO.UserDao;
 import DAO.UserDaoImpl;
 
@@ -25,10 +26,16 @@ public class LoginUser extends HttpServlet {
 		response.setContentType("application/json");
         PrintWriter out = response.getWriter();
     	UserDao userdao = new UserDaoImpl();
-
+    	Utilities util = new Utilities();
+    	
         User user = new User();
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
+        String email = util.clearSqlInjection(request.getParameter("email"));
+        String password = util.clearSqlInjection(request.getParameter("password"));
+        if(!util.checkEmail(email)) {
+        	response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            out.print("{\"message\": \"Invalid email.\"}");
+            return;
+        }
         user.setEmail(email);
         user.setPassword(password);
         

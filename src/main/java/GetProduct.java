@@ -19,7 +19,7 @@ import DAO.ProductDaoImpl;
 import model.Product;
 
 
-@WebServlet("/products")
+@WebServlet("/products/get")
 public class GetProduct extends HttpServlet {
 	private static final long serialVersionUID = 1L;
    

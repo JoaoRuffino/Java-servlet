@@ -7,31 +7,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.mindrot.jbcrypt.BCrypt;
-
+import db.DBQuery;
 import db.DBConnection;
 import model.User;
 
 public class UserDaoImpl implements UserDao {
 	
+	private DBQuery dbQuery;
 	
-	public List<User> getUser() throws SQLException, Exception {
-		DBConnection conn = new DBConnection();
-		String query = "select * from users";
+	public UserDaoImpl() {
+		this.dbQuery = new DBQuery("users", "user_id, username, email, cep", "user_id");
+	}
+	public List<User> getUser() throws SQLException {
 		List<User> users = new ArrayList<>();
-		PreparedStatement statement = conn.getConnection().prepareStatement(query);
-		ResultSet rs = statement.executeQuery();
-		
-		while(rs.next()) {
-			User user = new User();
-			user.setUser_id(rs.getInt("user_id"));
-			user.setUsername(rs.getString("username"));
-			user.setEmail(rs.getString("email"));
-			users.add(user);
+		try(ResultSet rs = dbQuery.select("")){
+			while(rs.next()) {
+				User user = new User();
+				user.setUser_id(rs.getInt("user_id"));
+				user.setUsername(rs.getString("username"));
+				user.setEmail(rs.getString("email"));
+				user.setCep(rs.getString("cep"));
+				users.add(user);
+			}
 		}
-		if (rs != null) rs.close();
-        if (statement != null) statement.close();
-        
-        return users;
+		return users;
 	}
 	
 
@@ -76,16 +75,8 @@ public class UserDaoImpl implements UserDao {
 	}
 	
 	public boolean deleteUser(User user) throws SQLException, Exception{
-		DBConnection conn = new DBConnection();
-		String query = "delete from users where user_id = ?";
-		PreparedStatement statement = conn.getConnection().prepareStatement(query);
-		statement.setInt(1, user.getUser_id());
-		int row = statement.executeUpdate();
-		if(row > 0) {
-	        if (statement != null) statement.close();
-			return true;
-		}
-		return false;
+		String[] values = new String[]{String.valueOf(user.getUser_id())};
+        return dbQuery.delete(values) > 0;
 	}
 	public boolean updateUser(User user) throws SQLException, Exception{
 		DBConnection conn = new DBConnection();
