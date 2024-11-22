@@ -12,7 +12,6 @@ API REST desenvolvida para gerenciamento de usuários com Java Servlet.
 
 ## GET /users
 * **Descrição**: Recupera informações de todos os usuários.
-* **Controller**: ControllerUser
 * **Header**: Necessário header padrão
 * **Parâmetros de Corpo**: Nenhum
 * **Sucesso**:
@@ -42,7 +41,6 @@ API REST desenvolvida para gerenciamento de usuários com Java Servlet.
 
 ## DELETE /users
 * **Descrição**: Remove um usuário pelo ID.
-* **Controller**: ControllerUser
 * **Header**: Necessário header padrão
 * **Parâmetros de Corpo**:
   * `user_id`: ID do usuário a ser removido.
@@ -67,7 +65,6 @@ API REST desenvolvida para gerenciamento de usuários com Java Servlet.
 
 ## PUT /users
 * **Descrição**: Atualiza as informações de um usuário existente.
-* **Controller**: ControllerUser
 * **Header**: Necessário header padrão
 * **Parâmetros de Corpo**:
   * `email`: Novo email do usuário.
@@ -99,7 +96,6 @@ API REST para registro de novos usuários com Java Servlet.
 
 ## POST /user/register
 * **Descrição**: Registra um novo usuário.
-* **Controller**: ControllerUser
 * **Parâmetros de Corpo**:
   * `email`: Email do usuário.
   * `username`: Nome de usuário.
@@ -132,7 +128,6 @@ API REST para registro de novos usuários com Java Servlet.
 
 ## POST /user/login
 * **Descrição**: Realiza o login do usuário.
-* **Controller**: ControllerUser
 * **Parâmetros de Corpo**:
   * `email`: Email do usuário.
   * `password`: Senha do usuário.
@@ -155,9 +150,8 @@ API REST para registro de novos usuários com Java Servlet.
 
 ---
 
-## GET /products
+## GET /products/get
 * **Descrição**: Recupera informações de todos os produtos.
-* **Controller**: ControllerProduct
 * **Parâmetros de Corpo**: Nenhum
 * **Sucesso**:
   * **Status 200**: Sucesso ao recuperar os dados dos usuários.
@@ -186,9 +180,8 @@ API REST para registro de novos usuários com Java Servlet.
 
 ---
 
-## PUT /all/products
+## PUT /products
 * **Descrição**: Editar produtos.
-* **Controller**: ControllerProduct
 * **Header**: Header padrão
 * **Parâmetros de Corpo**:
   * `IdProduct`: Id do produto.
@@ -218,9 +211,8 @@ API REST para registro de novos usuários com Java Servlet.
 
 ---
 
-## DELETE /all/products
+## DELETE /products
 * **Descrição**: Deletar produtos.
-* **Controller**: ControllerProduct
 * **Header**: Header padrão
 * **Parâmetros de Corpo**:
   * `IdProduct`: Id do produto.
@@ -237,9 +229,8 @@ API REST para registro de novos usuários com Java Servlet.
 
 ---
 
-## POST /all/products
+## POST /products
 * **Descrição**: Adicionar produtos.
-* **Controller**: ControllerProduct
 * **Header**: Header padrão
 * **Parâmetros de Corpo**:
   * `IdProduct`: Id do produto.
