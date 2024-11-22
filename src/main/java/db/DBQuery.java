@@ -82,7 +82,15 @@ public class DBQuery {
 
 	public ResultSet select(String where) {
 		String sql = "SELECT "+  this.joinElements(this.fieldsName, ", ") + " FROM " + this.tableName;
-		sql += (( where!="") ? " WHERE "+ where : "" );
+		System.out.print(sql);
+		return this.query(sql);
+	}
+	//Overload para where
+	public ResultSet select(String where, String comp) {
+		String sql = "SELECT "+  this.joinElements(this.fieldsName, ", ") + " FROM " + this.tableName;
+		if(where!=""){
+			sql += " WHERE " + where + " = '" + comp + "'";
+		}
 		System.out.print(sql);
 		return this.query(sql);
 	}

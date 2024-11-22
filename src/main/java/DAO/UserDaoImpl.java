@@ -16,7 +16,7 @@ public class UserDaoImpl implements UserDao {
 	private DBQuery dbQuery;
 	
 	public UserDaoImpl() {
-		this.dbQuery = new DBQuery("users", "user_id, username, email, cep", "user_id");
+		this.dbQuery = new DBQuery("users", "user_id, username, email, cep, password", "user_id");
 	}
 	public List<User> getUser() throws SQLException {
 		List<User> users = new ArrayList<>();
@@ -33,29 +33,22 @@ public class UserDaoImpl implements UserDao {
 		return users;
 	}
 	
-
 	public boolean loginUser(User user) throws SQLException, Exception {
-		DBConnection conn = new DBConnection();
-		String query = "select * from users where email =?";
-		PreparedStatement statement = conn.getConnection().prepareStatement(query);
-		statement.setString(1, user.getEmail());
-		ResultSet rs = statement.executeQuery();
-		if(rs.next()) {
-			if(rs.getString("email") != null) {
-				
-				if(BCrypt.checkpw(user.getPassword(), rs.getString("password"))) {
-					user.setUsername(rs.getString("username"));
-					user.setUser_id(rs.getInt("user_id"));
-					user.setPassword(rs.getString("password"));
-					return true;
+		try(ResultSet rs = dbQuery.select("email", user.getEmail())){
+			if(rs.next()) {
+				if(rs.getString("email") != null) {
+					if(BCrypt.checkpw(user.getPassword(), rs.getString("password"))) {
+						user.setUsername(rs.getString("username"));
+						user.setUser_id(rs.getInt("user_id"));
+						user.setPassword(rs.getString("password"));
+						return true;
+					}
 				}
+			}else {
+				return false;
 			}
-		}else {
-			return false;
 		}
-		if (rs != null) rs.close();
-        if (statement != null) statement.close();
-        return false;
+		return false;
 	}
 	
 	public boolean setUser(User user) throws SQLException, Exception{
