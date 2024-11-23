@@ -60,25 +60,10 @@ public class UserDaoImpl implements UserDao {
 	        return dbQuery.insert(values) > 0;
 	}
 	
-	public boolean setUsgggger(User user) throws SQLException, Exception{
-		DBConnection conn = new DBConnection();
-		String query = "insert into users(username, password, email, cep) values (?, ?, ?, ?)";
-		PreparedStatement statement = conn.getConnection().prepareStatement(query);
-		statement.setString(1, user.getUsername());
-		statement.setString(2, user.getPassword());
-		statement.setString(3, user.getEmail());
-		statement.setString(4, user.getCep());
-		int row = statement.executeUpdate();
-		if(row > 0) {
-	        if (statement != null) statement.close();
-			return true;
-		}
-		return false;
-	}
 	
 	public boolean deleteUser(User user) throws SQLException, Exception{
-		String[] values = new String[]{String.valueOf(user.getUser_id())};
-        return dbQuery.delete(values) > 0;
+		//String[] values = new String[]{String.valueOf(user.getUser_id())};
+        return dbQuery.delete(String.valueOf(user.getUser_id())) > 0;
 	}
 	public boolean updateUser(User user) throws SQLException, Exception{
 		DBConnection conn = new DBConnection();

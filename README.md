@@ -132,7 +132,7 @@ API REST para registro de novos usuários com Java Servlet.
   * `email`: Email do usuário.
   * `password`: Senha do usuário.
 * **Sucesso**:
-  * **Status 204**: Login bem-sucedido.
+  * **Status 200**: Login bem-sucedido.
   * **Exemplo de Resposta**:
     ```json
     {

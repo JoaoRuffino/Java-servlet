@@ -38,7 +38,6 @@ public class LoginUser extends HttpServlet {
         }
         user.setEmail(email);
         user.setPassword(password);
-        
         try {
 			boolean verify = userdao.loginUser(user);
 			if (verify) {

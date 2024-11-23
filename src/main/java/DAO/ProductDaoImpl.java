@@ -62,8 +62,8 @@ public class ProductDaoImpl implements ProductDao {
     }
 	
 	public boolean deleteProduct(Integer idProduct) throws SQLException{
-		String[] values = new String[]{String.valueOf(idProduct)};
-        return dbQuery.delete(values) > 0;
+		//String[] values = new String[]{String.valueOf(idProduct)};
+        return dbQuery.delete(String.valueOf(idProduct)) > 0;
 	}
 	
 	public boolean updateProduct(Product product) throws SQLException{

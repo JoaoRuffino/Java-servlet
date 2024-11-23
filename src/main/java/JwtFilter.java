@@ -37,6 +37,16 @@ public class JwtFilter extends HttpFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 	    HttpServletRequest req = (HttpServletRequest) request;
 	    HttpServletResponse res = (HttpServletResponse) response;
+	    //considerações para CORS
+	    res.setHeader("Access-Control-Allow-Origin", "*"); 
+        res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        res.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type");
+        res.setHeader("Access-Control-Allow-Credentials", "true");
+        if ("OPTIONS".equalsIgnoreCase(req.getMethod())) {
+            res.setStatus(HttpServletResponse.SC_OK);
+            return;
+        }
+        
 	    response.setContentType("application/json");
         PrintWriter out = response.getWriter();
 	    String requestURI = req.getRequestURI();
@@ -71,7 +81,6 @@ public class JwtFilter extends HttpFilter implements Filter {
             out.print("{\"message\": \"Token expirado.\"}");
 	    }
 	}
-
 
 	
 

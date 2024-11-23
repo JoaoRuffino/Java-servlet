@@ -117,9 +117,15 @@ public class DBQuery {
 		}	
 		return 0;
 	}
-	
-	public int delete(String[] values) {
+	public int delete(String id) {
+		String sql = "\nDELETE FROM "+this.tableName+" ";
 		
+		sql += "\n WHERE "+ this.fieldKey +" = '"+ id +"'";
+		return ( this.execute(sql) );
+	}
+	
+	/*Perguntar
+	 * public int delete(String[] values) {
 		String sql = "\nDELETE FROM "+this.tableName+" ";
 		if ( this.keyFieldIndex < 0 ){
 			return(0);
@@ -127,7 +133,7 @@ public class DBQuery {
 		sql += "\n WHERE "+ this.fieldKey +" = '"+ values[this.keyFieldIndex] +"'";
 		System.out.print( sql );
 		return ( this.execute(sql) );
-	}
+	}*/
 	
 	public int update(String[] values) {
 		
