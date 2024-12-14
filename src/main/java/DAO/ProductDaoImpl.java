@@ -13,7 +13,7 @@ public class ProductDaoImpl implements ProductDao {
 	
 	public ProductDaoImpl() {
 		this.dbQuery = new DBQuery("products", 
-	            "idProduct, manufacturer, name, brand, model, idCategory, description, unitMeasure, width, heigh, depth, weight, color", 
+	            "idProduct, manufacturer, name, brand, model, idCategory, description, unitMeasure, width, heigh, depth, weight, color, image_path", 
 	            "idProduct");
 	}
 	
@@ -35,7 +35,8 @@ public class ProductDaoImpl implements ProductDao {
                     rs.getString("heigh"),
                     rs.getString("depth"),
                     rs.getString("weight"),
-                    rs.getString("color")
+                    rs.getString("color"),
+                    rs.getString("image_path")
                 );
                 products.add(product);
             }
@@ -56,7 +57,9 @@ public class ProductDaoImpl implements ProductDao {
             product.getHeigh(),
             product.getDepth(),
             product.getWeight(),
-            product.getColor()
+            product.getColor(),
+            product.getImagePath()
+            
         };
         return dbQuery.insert(values) > 0;
     }
@@ -80,7 +83,9 @@ public class ProductDaoImpl implements ProductDao {
 	            product.getHeigh(),
 	            product.getDepth(),
 	            product.getWeight(),
-	            product.getColor()
+	            product.getColor(),
+	            product.getImagePath()
+
 	        };
         return dbQuery.update(values) > 0;
 

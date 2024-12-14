@@ -33,7 +33,6 @@ public class GetProduct extends HttpServlet {
         PrintWriter out = response.getWriter();
         
         try {
-        	//out.println("GET request received");
         	List<Product> products = new ArrayList<>();
         	ProductDao productdao = new ProductDaoImpl();
     		products = productdao.getProduct();
@@ -53,7 +52,6 @@ public class GetProduct extends HttpServlet {
             e.printStackTrace();
             out.println("Error: " + e.getMessage());
         }
-	
 	
 	}
 

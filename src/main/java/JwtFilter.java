@@ -2,6 +2,8 @@
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -50,9 +52,18 @@ public class JwtFilter extends HttpFilter implements Filter {
 	    response.setContentType("application/json");
         PrintWriter out = response.getWriter();
 	    String requestURI = req.getRequestURI();
+	    Collection<String> uris = new ArrayList<>();
+	    uris.add("/FirstProjeto/user/login");
+	    uris.add("/FirstProjeto/user/register");
+	    uris.add("/FirstProjeto/products/get");
+	    uris.add("/FirstProjeto/user/register");
+	    uris.add("/FirstProjeto/index.jsp");
+	    uris.add("/FirstProjeto/login.jsp");
+	    uris.add("/FirstProjeto/access.jsp");
+	    uris.add("/FirstProjeto/images/livros/harry_1.jpeg");
+
 	    //System.out.println(requestURI);
-	    if (requestURI.equals("/FirstProjeto/user/login") || requestURI.equals("/FirstProjeto/user/register") 
-	    		|| requestURI.equals("/FirstProjeto/products/get")) {
+	    if (uris.contains(requestURI)) {
 	        chain.doFilter(req, res);
 	        return;
 	    }
@@ -80,6 +91,7 @@ public class JwtFilter extends HttpFilter implements Filter {
 	        res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             out.print("{\"message\": \"Token expirado.\"}");
 	    }
+	   
 	}
 
 	

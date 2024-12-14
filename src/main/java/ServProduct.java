@@ -40,9 +40,10 @@ public class ServProduct extends HttpServlet {
 		String depth = util.clearSqlInjection(request.getParameter("depth"));
 		String weight = util.clearSqlInjection(request.getParameter("weight"));
 		String color = util.clearSqlInjection(request.getParameter("color"));
-		
+		String image_path = util.clearSqlInjection(request.getParameter("image_path"));
+
 		String[] parameters = { idProduct, manufacturer, name, brand, model, idCategory, description, unitMeasure,
-				width, heigh, depth, weight, color };
+				width, heigh, depth, weight, color, image_path };
 		
 		for (String param : parameters) {
 			if (param == null || param.isEmpty()) {
@@ -52,7 +53,7 @@ public class ServProduct extends HttpServlet {
 			}
 		}
 		Product product = new Product(Integer.parseInt(idProduct), manufacturer, name, brand, model, idCategory, description, unitMeasure, width, heigh,
-				depth, weight, color);
+				depth, weight, color, image_path);
 		try {
 			if (productdao.setProduct(product)) {
 				response.setStatus(HttpServletResponse.SC_NO_CONTENT);
@@ -127,6 +128,7 @@ public class ServProduct extends HttpServlet {
 		String depth = util.clearSqlInjection(request.getParameter("depth"));
 		String weight = util.clearSqlInjection(request.getParameter("weight"));
 		String color = util.clearSqlInjection(request.getParameter("color"));
+		String image_path = util.clearSqlInjection(request.getParameter("image_path"));
 
 		String[] parameters = { idProduct, manufacturer, name, brand, model, idCategory, description, unitMeasure,
 				width, heigh, depth, weight, color };
@@ -139,7 +141,7 @@ public class ServProduct extends HttpServlet {
 			}
 		}
 		Product product = new Product(Integer.parseInt(idProduct), manufacturer, name, brand, model, idCategory, description, unitMeasure, width, heigh,
-				depth, weight, color);
+				depth, weight, color, image_path);
 
 		try {
 			if (productdao.updateProduct(product)) {

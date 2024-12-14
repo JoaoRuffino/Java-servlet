@@ -14,6 +14,7 @@ public class Product {
 	public String depth;
 	public String weight;
 	public String color;
+	public String image_path;
 	
 	public Product() {
 		
@@ -22,7 +23,7 @@ public class Product {
 	
 	public Product(Integer idProduct, String manufacturer, String name, String brand, String model, String idCategory,
 			String description, String unitMeasure, String width, String heigh, String depth, String weight,
-			String color) {
+			String color, String image_path) {
 		super();
 		this.idProduct = idProduct;
 		this.manufacturer = manufacturer;
@@ -37,6 +38,7 @@ public class Product {
 		this.depth = depth;
 		this.weight = weight;
 		this.color = color;
+		this.image_path = image_path;
 	}
 	public Integer getIdProduct() {
 		return idProduct;
@@ -116,6 +118,11 @@ public class Product {
 	public void setColor(String color) {
 		this.color = color;
 	}
-
+	public String getImagePath() {
+		return this.image_path;
+	}
+	public void setImagePath(String image_path) {
+		this.image_path = image_path;
+	}
 
 }
