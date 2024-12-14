@@ -39,6 +39,40 @@
 		</div>
 	</nav>
 	
+	<!-- Modal para update user -->
+	<div class="modal fade" id="updateUserModal" tabindex="-1" aria-labelledby="updateUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateUserModalLabel">Atualizar Usuário</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="updateUserForm">
+                    <div class="mb-3">
+                        <label for="updateEmail" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="updateEmail" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="updateUsername" class="form-label">Nome de Usuário</label>
+                        <input type="text" class="form-control" id="updateUsername" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="updateCep" class="form-label">CEP</label>
+                        <input type="text" class="form-control" id="updateCep" required>
+                    </div>
+                    <input type="hidden" id="updateUserId">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="saveUpdateBtn">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>
+	
+	
 	<div id="usersSection" class="container my-5">
     <h3 class="text-center fw-bold mb-4 text-primary">User Management</h3>
     <div class="card shadow-lg border-0">
@@ -67,8 +101,9 @@
     </div>
 </div>
 	<script>
+	var token = localStorage.getItem('token');
+
 	$(document).ready(function(){
-		var token = localStorage.getItem('token');
 		if(!token){
             $(location).attr('href', './login.jsp');
             $("#manageContato").addClass("d-none");
@@ -97,8 +132,13 @@
                             <td>\${user.username}</td>
                             <td>\${user.cep}</td>
                             <td>
-                                <button class="btn btn-danger btn-sm deleteBtn" data-id="${user.user_id}">Delete</button>
+                                <button class="btn btn-danger btn-sm deleteBtn" data-id=\${user.user_id}>Delete</button>
+                                <button class="btn btn-warning btn-sm updateBtn" data-id=\${user.user_id}
+                                    data-email=\${user.email} 
+                                    data-username=\${user.username} 
+                                    data-cep=\${user.cep}>Update</button>
                             </td>
+                            
                         </tr>
                     `);
                 });
@@ -107,6 +147,13 @@
                     const userId = $(this).data('id');
                     deleteUser(userId);
                 });
+                $('.updateBtn').on('click', function () {
+                    const userId = $(this).data('id');
+                    const username = $(this).data('username');
+                    const email = $(this).data('email');
+                    const cep = $(this).data('cep');
+                    updateUser(userId, email, username, cep);
+                });
             },
             error: function () {
                 alert('Error fetching users');
@@ -114,6 +161,73 @@
         });
 		
 	})
+	
+	function deleteUser(id){
+		if (confirm("Tem certeza que deseja excluir este usuário?")) {
+			console.log('http://localhost:8080/FirstProjeto/users?user_id=' + id);
+			$.ajax({
+				url: 'http://localhost:8080/FirstProjeto/users?user_id=' + id,
+				type: "DELETE",
+				headers: { Authorization: `Bearer \${token}` },
+				success: function() {
+					alert("Usuário removido com sucesso!");
+					location.reload();
+				},
+				error: function(xhr) {
+					if (xhr.status === 400) {
+						alert("Erro: ID do usuário não fornecido.");
+					} else if (xhr.status === 500) {
+						alert("Erro no servidor ao remover o usuário.");
+					} else if (xhr.status === 401) {
+						alert("Não autorizado. Verifique seu token.");
+					} else {
+						alert("Erro desconhecido.");
+					}
+				}
+			});
+		}
+	}
+	function updateUser(userid, email, username, cep){
+
+	    $('#updateUserId').val(userid);
+	    $('#updateEmail').val(email);
+	    $('#updateUsername').val(username);
+	    $('#updateCep').val(cep);
+
+	    $('#updateUserModal').modal('show');
+	}
+	$('#saveUpdateBtn').on('click', function () {
+	    const userId = $('#updateUserId').val();
+	    const email = $('#updateEmail').val();
+	    const username = $('#updateUsername').val();
+	    const cep = $('#updateCep').val();
+
+	    const url = `http://localhost:8080/FirstProjeto/users?user_id=\${userId}&email=\${encodeURIComponent(email)}&username=\${encodeURIComponent(username)}&cep=\${encodeURIComponent(cep)}`;
+
+	    $.ajax({
+	        url: url,
+	        type: "PUT",
+	        headers: { Authorization: `Bearer \${token}` },
+	        success: function () {
+	            alert("Usuário atualizado com sucesso!");
+	            $('#updateUserModal').modal('hide');
+	            location.reload();
+	        },
+	        error: function (xhr) {
+	            if (xhr.status === 400) {
+	                alert("Erro: Informações obrigatórias não fornecidas.");
+	            } else if (xhr.status === 500) {
+	                alert("Erro no servidor ao atualizar o usuário.");
+	            } else if (xhr.status === 401) {
+	                alert("Não autorizado. Verifique seu token.");
+	            } else {
+	                alert("Erro desconhecido.");
+	            }
+	        }
+	    });
+	});
+
+	
 	$("#login").click(function(){
 		$(location).attr('href', './login.jsp');
 	})
