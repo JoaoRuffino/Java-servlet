@@ -39,6 +39,7 @@
 					</li>
 				</ul>
 				<button class="btn btn-outline-light" id="login" type="button">Login</button>
+				<button class="btn btn-outline-light" id="create" type="button">Criar usuário</button>
 				<button class="btn btn-outline-danger" id="logout" type="button">Logout</button>
 				
 			</div>
@@ -111,6 +112,10 @@ $(document).ready(function() {
 
 $("#login").click(function(){
 	$(location).attr('href', './login.jsp');
+
+})
+$("#create").click(function(){
+	$(location).attr('href', './create.jsp');
 
 })
 $("#logout").click(function(){

@@ -96,7 +96,21 @@
             </table>
         </div>
         <div class="card-footer text-muted text-center">
-            <small>&copy; 2024 Your Company</small>
+            <small>&copy; 2024 Loja Company</small>
+        </div>
+    </div>
+</div>
+<div id="usersSection" class="container my-5">
+    <h3 class="text-center fw-bold mb-4 text-primary">Products Management</h3>
+    <div class="card shadow-lg border-0">
+        <div class="card-header bg-primary text-white text-center">
+            <h5 class="m-0">Product List</h5>
+            
+        </div>
+                   		<div class="row row-cols-1 row-cols-md-3 g-4"></div>
+       
+        <div class="card-footer text-muted text-center">
+            <small>&copy; 2024 Loja Company</small>
         </div>
     </div>
 </div>
@@ -113,7 +127,49 @@
 		if(token){
 			$("#login").addClass("d-none");
 		}
-		
+		$.ajax({
+		    url: "http://localhost:8080/FirstProjeto/products/get",
+		    type: "GET",
+		    dataType: "json",
+		    success: function(data) {
+		   
+		      const productContainer = $(".row");
+		      productContainer.empty();
+
+		      data.forEach(function(product) {
+		    	 console.log(product.name);
+		    	    console.log(typeof product.name);
+
+		    	    const productCard = 
+		  	    	  `<div class="col"> 
+		  	    	    <div class="card h-100">
+		                <img style="height: 300px; object-fit: cover;" src=\${product.image_path}>
+		  	    	      <div class="card-body">
+		  	    	        <h5 class="card-title">\${product.name}</h5>
+		  	    	        <p class="card-text"> \${product.description}</p>
+		  	    	        <button data-id=\${product.idProduct} class="btn btn-danger deleteProduct">Deletar</button> 
+		  	    	        <button class="btn btn-warning updateProduct">Editar</button>
+		  	    	      </div> 
+		  	    	    </div> 
+		  	    	  </div>`;
+		        productContainer.append(productCard);
+		      });
+		      $('.deleteProduct').on('click', function () {
+                  const userId = $(this).data('id');
+                  deleteProduct(userId);
+              });
+              $('.updateProduct').on('click', function () {
+                  const userId = $(this).data('id');
+                  const username = $(this).data('username');
+                  const email = $(this).data('email');
+                  const cep = $(this).data('cep');
+                  updateUser(userId, email, username, cep);
+              });
+		    },
+		    error: function(xhr, status, error) {
+		      alert("Ocorreu um erro ao consumir produtos: " + error);
+		    }
+		  });
 		//Fetch users
 		$.ajax({
             url: 'http://localhost:8080/FirstProjeto/users',
@@ -132,11 +188,11 @@
                             <td>\${user.username}</td>
                             <td>\${user.cep}</td>
                             <td>
-                                <button class="btn btn-danger btn-sm deleteBtn" data-id=\${user.user_id}>Delete</button>
+                                <button class="btn btn-danger btn-sm deleteBtn" data-id=\${user.user_id}>Deletar</button>
                                 <button class="btn btn-warning btn-sm updateBtn" data-id=\${user.user_id}
                                     data-email=\${user.email} 
                                     data-username=\${user.username} 
-                                    data-cep=\${user.cep}>Update</button>
+                                    data-cep=\${user.cep}>Editar</button>
                             </td>
                             
                         </tr>
@@ -161,7 +217,30 @@
         });
 		
 	})
-	
+	function deleteProduct(id){
+		if (confirm("Tem certeza que deseja excluir este produto?")) {
+			$.ajax({
+				url: 'http://localhost:8080/FirstProjeto/products?idProduct=' + id,
+				type: "DELETE",
+				headers: { Authorization: `Bearer \${token}` },
+				success: function() {
+					alert("Usuário removido com sucesso!");
+					location.reload();
+				},
+				error: function(xhr) {
+					if (xhr.status === 400) {
+						alert("Erro: ID do produto não fornecido.");
+					} else if (xhr.status === 500) {
+						alert("Erro no servidor ao remover o usuário.");
+					} else if (xhr.status === 401) {
+						alert("Não autorizado. Verifique seu token.");
+					} else {
+						alert("Erro desconhecido.");
+					}
+				}
+			});
+		}
+	}
 	function deleteUser(id){
 		if (confirm("Tem certeza que deseja excluir este usuário?")) {
 			console.log('http://localhost:8080/FirstProjeto/users?user_id=' + id);
