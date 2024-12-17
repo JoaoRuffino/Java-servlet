@@ -102,11 +102,13 @@
 
     $.ajax({
         url: `http://localhost:8080/FirstProjeto/user/register?username=\${username}&password=\${password}&email=\${email}&cep=\${cep}`,
-        method: 'POST', 
-        success: function (response, textStatus, xhr) {
+        method: 'POST',
+        statusCode: {
+            201: function (response, textStatus, xhr) {
+                console.log("User created with status 201");
                 alert('User created successfully');
                 $(location).attr('href', './login.jsp');
-            
+            }
         },
         error: function (xhr) {
             if (xhr.status === 400) {
@@ -116,6 +118,7 @@
             }
         }
     });
+
 });
 	</script>
 </body>

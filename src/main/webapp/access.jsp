@@ -100,7 +100,6 @@
 						</tr>
 					</thead>
 					<tbody id="usersTableBody">
-						<!-- Linhas geradas dinamicamente -->
 					</tbody>
 				</table>
 			</div>
@@ -109,8 +108,8 @@
 			</div>
 		</div>
 	</div>
-	<div id="usersSection" class="container my-5">
-		<h3 class="text-center fw-bold mb-4 text-primary">Products
+	<div id="productsSection" class="container my-5">
+		<h3 id="manageProdutos" class="text-center fw-bold mb-4 text-primary">Products
 			Management</h3>
 		<div class="card shadow-lg border-0">
 			<div class="card-header bg-primary text-white text-center">
@@ -149,7 +148,7 @@
 		      data.forEach(function(product) {
 		    	 console.log(product.name);
 		    	    console.log(typeof product.name);
-
+					console.log(product.image_path);
 		    	    const productCard = 
 		  	    	  `<div class="col"> 
 		  	    	    <div class="card h-100">
@@ -233,7 +232,7 @@
 				type: "DELETE",
 				headers: { Authorization: `Bearer \${token}` },
 				success: function() {
-					alert("Usuário removido com sucesso!");
+					alert("Produto removido com sucesso!");
 					location.reload();
 				},
 				error: function(xhr) {

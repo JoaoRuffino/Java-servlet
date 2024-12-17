@@ -16,7 +16,7 @@ public class Authenticator {
 		String token = Jwts.builder()
 				.setSubject(email)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 6000000)) // 100 minutos
+                .setExpiration(new Date(System.currentTimeMillis() + 60000000)) //16 horas
                 .signWith(signatureAlgorithm, SECRET_KEY)
                 .compact();
 		return token;

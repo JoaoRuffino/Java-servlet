@@ -1,7 +1,4 @@
-
-
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -20,7 +17,6 @@ import Authenticator.Authenticator;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.SignatureException;
-
 
 @WebFilter("/*")
 public class JwtFilter extends HttpFilter implements Filter {
@@ -41,7 +37,7 @@ public class JwtFilter extends HttpFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
 
-        // Considerações para CORS
+        // Configurações de CORS
         res.setHeader("Access-Control-Allow-Origin", "*");
         res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
         res.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type");
@@ -52,12 +48,16 @@ public class JwtFilter extends HttpFilter implements Filter {
             return;
         }
 
-        response.setContentType("application/json");
-        PrintWriter out = response.getWriter();
-
         String requestURI = req.getRequestURI();
 
-        // Lista de URLs que precisam de autenticação
+        // Liberação de recursos estáticos (imagens, CSS, JS, etc.)
+        if (requestURI.endsWith(".png") || requestURI.endsWith(".jpg") || requestURI.endsWith(".jpeg")
+                || requestURI.endsWith(".gif") || requestURI.endsWith(".css") || requestURI.endsWith(".js")) {
+            chain.doFilter(req, res);
+            return;
+        }
+
+        // URLs protegidas
         Collection<String> protectedUris = new ArrayList<>();
         protectedUris.add("/FirstProjeto/users");
         protectedUris.add("/FirstProjeto/products");
@@ -67,7 +67,7 @@ public class JwtFilter extends HttpFilter implements Filter {
             return;
         }
 
-        // Verificar token para URLs protegidas
+        // Verificar token JWT
         String authHeader = req.getHeader("Authorization");
         if (authHeader == null || !authHeader.matches("Bearer .+")) {
             res.sendError(HttpServletResponse.SC_UNAUTHORIZED);
@@ -79,14 +79,16 @@ public class JwtFilter extends HttpFilter implements Filter {
             Claims claims = Authenticator.validateToken(token);
             if (Authenticator.isTokenExpired(claims)) {
                 res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                out.print("{\"message\": \"Token expirado.\"}");
+                res.getWriter().print("{\"message\": \"Token expirado.\"}");
                 return;
             }
+
+            // Passar informações do token para a requisição
             request.setAttribute("email", claims.getSubject());
             chain.doFilter(req, res);
         } catch (ExpiredJwtException | SignatureException e) {
             res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            out.print("{\"message\": \"Token inválido ou expirado.\"}");
+            res.getWriter().print("{\"message\": \"Token inválido ou expirado.\"}");
         }
     }
 }

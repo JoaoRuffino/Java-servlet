@@ -90,16 +90,17 @@ $(document).ready(function() {
     	    console.log(typeof product.name);
 
     	    const productCard = 
-  	    	  '<div class="col">' +
-  	    	    '<div class="card h-100">' +
-                '<img class="w-100 h-80px" src="./images/livros/harry_1.jpeg">' +
-  	    	      '<div class="card-body">' +
-  	    	        '<h5 class="card-title">' + product.name + '</h5>' +
-  	    	        '<p class="card-text">' + product.description + '</p>' +
-  	    	        '<a href="#" class="btn btn-primary">Comprar</a>' +
-  	    	      '</div>' +
-  	    	    '</div>' +
-  	    	  '</div>';
+	  	    	  `<div class="col"> 
+	  	    	    <div class="card h-100">
+	                <img style="height: 300px; object-fit: cover;" src=\${product.image_path}>
+	  	    	      <div class="card-body">
+	  	    	        <h5 class="card-title">\${product.name}</h5>
+	  	    	        <p class="card-text"> \${product.description}</p>
+	  	    	        <a href="#" class="btn btn-primary">Comprar</a>
+
+	  	    	      </div> 
+	  	    	    </div> 
+	  	    	  </div>`;
         console.log(productCard);
         productContainer.append(productCard);
       });
